@@ -12,6 +12,16 @@ include('header.php');
     <title>Document</title>
 </head>
 <body>
+
+<?php
+
+    $db = new SysTem();
+
+    $answer = $db->get_row("cars", "1", "");
+
+    var_dump($answer);
+?>
+
     
 </body>
 </html>

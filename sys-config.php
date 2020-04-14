@@ -1,11 +1,11 @@
 <?php 
 
-const $DB_NAME;
+const DB_NAME = "dummy";
 
-const $DB_USER;
+const DB_USER = "root";
 
-const $DB_PASSWORD;
+const DB_PASSWORD = "";
 
-const $DB_HOST;
+const DB_HOST = "localhost";
 
 ?>
