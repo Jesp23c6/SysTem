@@ -18,14 +18,14 @@ class SysTem{
 
     }
 
-
+    /**
+     * 
+     */
     function get_row($table_name, $where, $data){
 
-        if($data == ""){
-            $data = "object";
+        if(empty($data)){
+            $data = "OBJECT";
         }
-
-        strtoupper($data);
 
         $sql = "SELECT * FROM $table_name WHERE id = '$where'";
 
@@ -41,10 +41,10 @@ class SysTem{
 
             }
 
-            return $test;
-            //return $array;
-
         }
+
+        return $test;
+        //return $array;
 
     }
 
