@@ -28,9 +28,15 @@ class SysDB{
     /**
      * A get row function that can return three different types of result, depending on $data
      * 
+     * @param   $table_name
+     * @param   $where
+     * @param   $data
+     * 
      * if $data is "OBJECT" it will return the result in an object.
      * if $data is "ARRAY_A" it will return the result as an associative array.
      * if $data is "ARRAY_N" it will return the result as a numbered array.
+     * 
+     * @return  $result
      */
     function get_row($table_name, $where, $data){
 
@@ -42,30 +48,28 @@ class SysDB{
 
         $query = $this->conn->query($sql);
 
-        if($data == "OBJECT"){
+        switch($data){
 
-            $result = new \stdClass();
+            case "OBJECT":
+                $result = new \stdClass();
 
-            while($obj = $query->fetch_object()){
+                while($obj = $query->fetch_object()){
 
                 $result = $obj;
 
-            }
-
-        }
-
-        else if($data == "ARRAY_A" || "ARRAY_N")
-            while($row = $query->fetch_assoc()){
-
-                if($data == "ARRAY_A"){
+                }
+                break;
+            case "ARRAY_A":
+                while($row = $query->fetch_assoc()){
 
                     $result = array();
 
                     $result = array('ID' => $row['id'], 'Year' => $row['year'], 'Manufacturer' => $row['make'], 'Model' => $row['model']);
 
                 }
-
-                if($data == "ARRAY_N"){
+                break;
+            case "ARRAY_N":
+                while($row = $query->fetch_assoc()){
 
                     $result = array();
 
@@ -74,7 +78,7 @@ class SysDB{
                 }
 
         }
-
+        
         return $result;
 
     }
