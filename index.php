@@ -15,7 +15,10 @@ include('header.php');
 
 <?php
 
-    $db = new SysTem();
+    /**
+     * Here I call the class SysDB from SysDB.php to use for the get_row function.
+     */
+    $db = new SysTem\SysDB();
 
     $answer = $db->get_row("cars", "1", "");
 
