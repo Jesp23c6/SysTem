@@ -46,35 +46,40 @@ class SysDB{
 
         $sql = "SELECT * FROM $table_name WHERE id = '$where'";
 
-        $query = $this->conn->query($sql);
+        if($query = $this->conn->query($sql)){
 
-        switch($data){
+            switch($data){
 
-            case "OBJECT":
-                $result = new \stdClass();
-
-                while($obj = $query->fetch_object()){
-
-                $result = $obj;
-
-                }
-                break;
-            case "ARRAY_A":
-                while($row = $query->fetch_assoc()){
-
-                    $result = $row;
-
-                }
-                break;
-            case "ARRAY_N":
-                while($row = $query->fetch_array()){
-
-                    $result = $row;
-
-                }
+                case "OBJECT":
+                    $result = new \stdClass();
+    
+                    while($obj = $query->fetch_object()){
+    
+                    $result = $obj;
+    
+                    }
+                    break;
+                case "ARRAY_A":
+                    while($row = $query->fetch_assoc()){
+    
+                        $result = $row;
+    
+                    }
+                    break;
+                case "ARRAY_N":
+                    while($row = $query->fetch_array()){
+    
+                        $result = $row;
+    
+                    }
+    
+            }
 
         }
-        
+        else{
+            $result = false;
+        }
+
         return $result;
 
     }
