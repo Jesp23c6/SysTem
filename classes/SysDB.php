@@ -105,7 +105,7 @@ class SysDB{
 
         }
         else{
-            $result = "Error: No valid column selected.";
+            $result = false;
         }
 
         return $result;

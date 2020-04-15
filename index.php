@@ -20,13 +20,13 @@ include('header.php');
      */
     $db = new SysTem\SysDB();
 
-    $get_row = $db->get_row("cars", "1", "");
+    $get_row = $db->get_row("cars", "1", "ARRAY_N");
 
     echo("get_row method: <br>");
     var_dump($get_row);
 
     echo("<br><br>get_col method: <br>");
-    $get_col = $db->get_col("cars", "ble");
+    $get_col = $db->get_col("cars", "id");
 
     var_dump($get_col);
 ?>
