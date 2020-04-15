@@ -62,18 +62,14 @@ class SysDB{
             case "ARRAY_A":
                 while($row = $query->fetch_assoc()){
 
-                    $result = array();
-
-                    $result = array('ID' => $row['id'], 'Year' => $row['year'], 'Manufacturer' => $row['make'], 'Model' => $row['model']);
+                    $result = $row;
 
                 }
                 break;
             case "ARRAY_N":
-                while($row = $query->fetch_assoc()){
+                while($row = $query->fetch_array()){
 
-                    $result = array();
-
-                    $result = array($row['id'], $row['year'], $row['make'], $row['model']);
+                    $result = $row;
 
                 }
 
@@ -88,6 +84,8 @@ class SysDB{
      * 
      * @param   $table_name
      * @param   $col_name
+     * 
+     * @return  $result
      */
     function get_col($table_name, $col_name){
 
@@ -97,7 +95,7 @@ class SysDB{
 
             $result = array();
 
-            while($row = $query->fetch_assoc()){
+            while($row = $query->fetch_array()){
 
                 array_push($result, $row[$col_name]);
 
