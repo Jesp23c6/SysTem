@@ -83,7 +83,12 @@ class SysDB{
 
     }
 
-
+    /**
+     * A method that will grab an entire colum from the specified table and column name.
+     * 
+     * @param   $table_name
+     * @param   $col_name
+     */
     function get_col($table_name, $col_name){
 
         $sql = "SELECT $col_name FROM $table_name";
