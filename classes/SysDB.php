@@ -84,6 +84,30 @@ class SysDB{
     }
 
 
+    function get_col($table_name, $col_name){
+
+        $sql = "SELECT $col_name FROM $table_name";
+
+        if($query = $this->conn->query($sql)){
+
+            $result = array();
+
+            while($row = $query->fetch_assoc()){
+
+                array_push($result, $row[$col_name]);
+
+            }
+
+        }
+        else{
+            $result = "Error: No valid column selected.";
+        }
+
+        return $result;
+
+    }
+
+
 }
 
 
