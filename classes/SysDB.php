@@ -135,7 +135,7 @@ class SysDB{
         */
         if(!$query){
 
-            throw new \Exception("THIS IS AND ERROR, PLEASE SEEK SHELTER. ");
+            throw new \Exception("THIS IS AN ERROR, PLEASE SEEK SHELTER. ");
 
         }
         
@@ -153,7 +153,9 @@ class SysDB{
 
             return $result;
 
-        }catch (\Exception $e){
+        }
+        
+        catch(\Exception $e){
 
             echo("Catch ");
             echo($e->getMessage());
