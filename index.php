@@ -26,9 +26,15 @@ include('header.php');
     var_dump($get_row);
 
     echo("<br><br>get_col method: <br>");
-    $get_col = $db->get_col("cars", "id");
+    $get_col = $db->get_col("cars", "bleh");
 
     var_dump($get_col);
+
+    echo("<br><br>get_results method: <br>");
+    $sql = "SELECT * FROM cars WHERE id = '1'";
+    $get_results = $db->get_results($sql);
+
+    var_dump($get_results);
 ?>
 
     

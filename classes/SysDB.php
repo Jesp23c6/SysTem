@@ -26,7 +26,7 @@ class SysDB{
     }
 
     /**
-     * A get row function that can return three different types of result, depending on $data
+     * A get row method that can return three different types of result, depending on $data
      * 
      * @param   $table_name
      * @param   $where
@@ -72,6 +72,7 @@ class SysDB{
                         $result = $row;
     
                     }
+                    break;
     
             }
 
@@ -112,6 +113,46 @@ class SysDB{
         }
 
         return $result;
+
+    }
+
+    /**
+     * A method that should be flexible enough that it will work with any valid SQL call.
+     * 
+     * @param   $sql
+     * 
+     * @return  $result
+     */
+    function get_results($sql){
+
+        $query = $this->conn->query($sql);
+
+        if($query->num_rows < 1){
+
+            throw new \Exception("THIS IS AN ERROR, PLEASE SEEK SHELTER. ");
+
+        }
+        
+        try{
+
+            $result = array();
+
+            while($obj = $query->fetch_object()){
+
+                $sql_obj = $obj;
+
+                array_push($result, $sql_obj);
+
+            }
+
+            return $result;
+
+        }catch (\Exception $e){
+
+            echo("Catch ");
+            echo($e->getMessage());
+
+        }
 
     }
 
