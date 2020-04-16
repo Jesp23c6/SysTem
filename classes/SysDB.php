@@ -9,7 +9,7 @@ namespace SysTem;
  */
 class SysDB{
 
-    public $conn;
+    private $conn;
 
     /**
      * Here I'm making a constructor that makes sure to either connect or show error message.
