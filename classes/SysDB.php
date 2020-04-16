@@ -126,16 +126,10 @@ class SysDB{
     function get_results($sql){
 
         $query = $this->conn->query($sql);
-        /*
-        if($query->num_rows < 1){
-
-            throw new \Exception("THIS IS AN ERROR, PLEASE SEEK SHELTER. ");
-
-        }
-        */
+        
         if(!$query){
 
-            throw new \Exception("THIS IS AN ERROR, PLEASE SEEK SHELTER. ");
+            throw new \Exception($this->conn->error);
 
         }
         
@@ -155,10 +149,10 @@ class SysDB{
 
         }
         
-        catch(\Exception $e){
+        catch(Exception $e){
 
-            echo("Catch ");
-            echo($e->getMessage());
+            echo("CAUGHT ERROR: ");
+            echo($e);
 
         }
 
