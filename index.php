@@ -31,7 +31,7 @@ include('header.php');
     var_dump($get_col);
 
     echo("<br><br>get_results method: <br>");
-    $sql = "SELECT * FROM cars WHERE id = '1'";
+    $sql = "SELECT * FROM cars WHERE id = 'ble'";
     $get_results = $db->get_results($sql);
 
     var_dump($get_results);
