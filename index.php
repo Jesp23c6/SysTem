@@ -21,20 +21,19 @@ include('header.php');
     $db = new SysTem\SysDB();
 
     $get_row = $db->get_row("cars", "1", "ARRAY_N");
+    
+    echo("<b>get_row method:</b> <br>");
+    //var_dump($get_row);
 
-    echo("get_row method: <br>");
-    var_dump($get_row);
-
-    echo("<br><br>get_col method: <br>");
+    echo("<br><br><b>get_col method:</b> <br>");
     $get_col = $db->get_col("cars", "bleh");
-
-    var_dump($get_col);
-
-    echo("<br><br>get_results method: <br>");
-    $sql = "SELECT * FROM caars WHERE id = '1'";
+    //var_dump($get_col);
+    
+    echo("<br><br><b>get_results method:</b> <br>");
+    $sql = "SELECT * FROM cars WHERE id = '1'";
     $get_results = $db->get_results($sql);
-
-    var_dump($get_results);
+    //var_dump($get_results);
+    
 ?>
 
     

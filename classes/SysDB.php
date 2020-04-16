@@ -126,33 +126,37 @@ class SysDB{
     function get_results($sql){
 
         $query = $this->conn->query($sql);
-        
-        if(!$query){
 
-            throw new \Exception($this->conn->error);
-
-        }
-        
         try{
 
-            $result = array();
+            if($this->conn->error){
 
-            while($obj = $query->fetch_object()){
+                throw new \Exception($this->conn->error);
+    
+            }
+            else{
 
-                $sql_obj = $obj;
+                $result = array();
 
-                array_push($result, $sql_obj);
+                while($obj = $query->fetch_object()){
+
+                    $sql_obj = $obj;
+
+                    array_push($result, $sql_obj);
+
+                }
+
+                return $result;
 
             }
 
-            return $result;
-
         }
         
-        catch(Exception $e){
+        catch(\Exception $e){
 
-            echo("CAUGHT ERROR: ");
-            echo($e);
+            echo("CAUGHT ERROR: NOGET SOM HELST.");
+
+            //var_dump($e);
 
         }
 
