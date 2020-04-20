@@ -162,6 +162,50 @@ class SysDB{
 
     }
 
+    /**
+     * A method for inserting data into a table.
+     * 
+     * @param   $table_name
+     * 
+     * @param   $data
+     * 
+     * @return  $result
+     * 
+     * $data is expected to be an associative array, or else code will not run properly.
+     */
+    function insert($table_name, $data){
+
+        $data;
+
+        $counter = 1;
+
+        foreach($data as $key => $value){
+
+            $data[$counter] = $value;
+
+            $counter = $counter+1;
+
+        }
+
+        $sql = "INSERT INTO $table_name (year, make, model) VALUES ('$data[1]', '$data[2]', '$data[3]')";
+
+        $query = $this->conn->query($sql);
+
+        if($query){
+
+            $result = true;
+
+        }
+        else{
+
+            $result = false;
+
+        }
+
+        return $result;
+
+    }
+
 
 }
 

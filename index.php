@@ -33,6 +33,12 @@ include('header.php');
     $sql = "SELECT * FROM cars WHERE id = '1'";
     $get_results = $db->get_results($sql);
     //var_dump($get_results);
+
+    echo("<br><br><b>insert method:</b> <br>");
+    $array_one = array("year" => "1994", "make" => "Niemann", "model" => "Jesper");
+    $insert = $db->insert("cars", $array_one);
+    var_dump($insert);
+    
     
 ?>
 
