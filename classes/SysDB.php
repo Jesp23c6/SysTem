@@ -187,9 +187,23 @@ class SysDB{
 
         }
 
-        $sql = "INSERT INTO $table_name (year, make, model) VALUES ('$data[1]', '$data[2]', '$data[3]')";
+        //$sql = "INSERT INTO $table_name (year, make, model) VALUES ('$data[1]', '$data[2]', '$data[3]')";
 
-        $query = $this->conn->query($sql);
+        $columns = "";
+
+        $val = "";
+
+        foreach($data as $key => $value){
+            
+            $columns = $columns . $key . ", ";
+
+            //$val = $val . $value . ", ";
+        
+        }
+
+        $sql = "INSERT INTO $table_name";
+
+        //$query = $this->conn->query($sql);
 
         if($query){
 
@@ -202,7 +216,8 @@ class SysDB{
 
         }
 
-        return $result;
+        //return $result;
+        return $columns;
 
     }
 
