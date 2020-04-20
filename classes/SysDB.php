@@ -174,7 +174,7 @@ class SysDB{
      * $data is expected to be an associative array, or else code will not run properly.
      */
     function insert($table_name, $data){
-
+        /*
         $data;
 
         $counter = 1;
@@ -186,9 +186,9 @@ class SysDB{
             $counter = $counter+1;
 
         }
-
-        //$sql = "INSERT INTO $table_name (year, make, model) VALUES ('$data[1]', '$data[2]', '$data[3]')";
-
+        
+        $sql = "INSERT INTO $table_name (year, make, model) VALUES ('$data[1]', '$data[2]', '$data[3]')";
+        */
         $columns = "";
 
         $val = "";
@@ -201,10 +201,10 @@ class SysDB{
         
         }
 
-        $sql = "INSERT INTO $table_name";
+        //$sql = "INSERT INTO $table_name";
 
         //$query = $this->conn->query($sql);
-
+        /*
         if($query){
 
             $result = true;
@@ -215,8 +215,9 @@ class SysDB{
             $result = false;
 
         }
-
-        //return $result;
+        
+        return $result;
+        */
         return $columns;
 
     }
