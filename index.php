@@ -35,7 +35,10 @@ include('header.php');
     //var_dump($get_results);
 
     echo("<br><br><b>insert method:</b> <br>");
-    $array_one = array("year" => "1994", "make" => "Niemann", "model" => "Jesper");
+    $array_one = array(
+        array("year" => "1994", "make" => "Niemann", "model" => "Jesper"), 
+        array("year" => "1994", "make" => "Niemann", "model" => "Jesper")
+    );
     $insert = $db->insert("cars", $array_one);
     var_dump($insert);
     

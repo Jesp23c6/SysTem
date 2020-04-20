@@ -171,54 +171,42 @@ class SysDB{
      * 
      * @return  $result
      * 
-     * $data is expected to be an associative array, or else code will not run properly.
+     * $data is expected to be an associative array, or else $result will return as false.
      */
     function insert($table_name, $data){
-        /*
-        $data;
-
-        $counter = 1;
 
         foreach($data as $key => $value){
 
-            $data[$counter] = $value;
+            $a_key_array = array();
 
-            $counter = $counter+1;
+            $a_value_array = array();
 
-        }
-        
-        $sql = "INSERT INTO $table_name (year, make, model) VALUES ('$data[1]', '$data[2]', '$data[3]')";
-        */
-        $columns = "";
+            foreach($value as $a_key => $a_value){
 
-        $val = "";
+                array_push($a_key_array, $a_key); 
 
-        foreach($data as $key => $value){
-            
-            $columns = $columns . $key . ", ";
+                array_push($a_value_array, $a_value);
 
-            //$val = $val . $value . ", ";
-        
-        }
+            }
 
-        //$sql = "INSERT INTO $table_name";
+            $sql = "INSERT INTO $table_name (" . implode(', ', $a_key_array) . ") VALUES ('" . implode("', '", $a_value_array) . "')";
 
-        //$query = $this->conn->query($sql);
-        /*
-        if($query){
+            $query = $this->conn->query($sql);
 
-            $result = true;
+            if($query){
 
-        }
-        else{
-
-            $result = false;
+                $result = true;
+    
+            }
+            else{
+    
+                $result = false;
+    
+            }
 
         }
-        
+
         return $result;
-        */
-        return $columns;
 
     }
 
