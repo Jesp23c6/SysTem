@@ -171,9 +171,11 @@ class SysDB{
      * 
      * @return  $result
      * 
-     * $data is expected to be an associative array, or else $result will return as false.
+     * $data is expected to be a numbered array with associative arrays within.
+     * 
+     * $a_key_array and $a_value_array contain all the keys and values in the associative arrays respectively as they get array_pushed in the foreach loops.
      */
-    function insert($table_name, $data){
+    function insert_first($table_name, $data){
 
         foreach($data as $key => $value){
 
@@ -203,13 +205,71 @@ class SysDB{
                 $result = false;
     
             }
-
+        
         }
 
         return $result;
 
     }
 
+    /**
+     * A method for inserting data into a table.
+     * 
+     * @param   $table_name
+     * 
+     * @param   $data
+     * 
+     * @return  $result
+     * 
+     * $data is expected to be a numbered array with associative arrays within.
+     * 
+     * $a_key_array and $a_value_array contain all the keys and values in the associative arrays respectively as they get array_pushed in the foreach loops.
+     */
+    function insert($table_name, $data){
+
+        foreach($data as $key => $value){
+
+            $a_key_array = array();
+
+            $a_value_array = array();
+
+            foreach($value as $a_key => $a_value){
+
+                array_push($a_key_array, $a_key); 
+
+                array_push($a_value_array, $a_value);
+
+            }
+
+            $a_key_count = str_repeat("?, ", count($a_key_array) - 1) . "?";
+
+            $a_value_count = str_repeat("'?', ", count($a_value_array) - 1) . "'?'";
+
+            $sql = "INSERT INTO ? ($a_key_count) VALUES ($a_value_count)";
+
+            $stmt = $this->conn->prepare($sql);
+
+            $key_types = str_repeat('s', count($a_key_array));
+
+            $value_types = str_repeat('s', count($a_value_array));
+
+            $types = "s" . $key_types . $value_types;
+            
+            $stmt->bind_param($types, $table_name, \...$a_key_array, \...$a_value_array);
+
+            $stmt->execute();
+
+            $stmt->close();
+            
+            //$test = \...$a_key_array;
+
+        }
+
+        //return $result;
+
+        //return $test;
+
+    }
 
 }
 
