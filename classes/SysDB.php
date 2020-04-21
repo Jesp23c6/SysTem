@@ -240,34 +240,33 @@ class SysDB{
                 array_push($a_value_array, $a_value);
 
             }
-
+            //Counts how many indexes the array has and makes a string with that amount of '?'
             $a_key_count = str_repeat("?, ", count($a_key_array) - 1) . "?";
 
+            //Counts how many indexes the array has and makes a string with that amount of '?'
             $a_value_count = str_repeat("'?', ", count($a_value_array) - 1) . "'?'";
 
+            //Uses the value counters to insert the proper amount of '?' in the sql string.
             $sql = "INSERT INTO ? ($a_key_count) VALUES ($a_value_count)";
 
             $stmt = $this->conn->prepare($sql);
 
+            //Counts how many indexes the array has and makes a string with that amount of 's'
             $key_types = str_repeat('s', count($a_key_array));
 
+            //Counts how many indexes the array has and makes a string with that amount of 's'
             $value_types = str_repeat('s', count($a_value_array));
 
+            //a string of one 's' for the $table_name. Then combines the variables with the other 's'
             $types = "s" . $key_types . $value_types;
             
             $stmt->bind_param($types, $table_name, \...$a_key_array, \...$a_value_array);
-
+            
             $stmt->execute();
 
             $stmt->close();
-            
-            //$test = \...$a_key_array;
 
         }
-
-        //return $result;
-
-        //return $test;
 
     }
 

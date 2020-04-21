@@ -40,11 +40,7 @@ include('header.php');
         array("year" => "1994", "make" => "Niemann", "model" => "Jesper")
     );
     $insert = $db->insert("cars", $array_one);
-    //var_dump($insert);
-    
-    echo("<br><br><b>TESTER method:</b> <br>");
-    $array_test = array("hej", "lol", "what!");
-    
+    var_dump($insert);   
     
 ?>
 
