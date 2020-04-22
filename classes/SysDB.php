@@ -293,6 +293,100 @@ class SysDB{
 
         $columns = array();
 
+        $where_val_array = array();
+
+        $types = "";
+
+        foreach($data as $col => $val){
+
+            $values = $col . " = " . "'" . $val . "'";
+
+            array_push($columns, $values);
+
+        }
+
+        $updates = implode(", ", $columns);
+
+        $sql = "UPDATE $table_name SET $updates WHERE ";
+
+        $and_count = count($where);
+
+        //At this point I do a count to check how many ANDs should be implemented.
+        if($and_count - 1 / 1 > 0){
+
+            $and_counter = $and_count -1 / 1;
+
+            foreach($where as $and_array_key => $and_array_val){
+
+                $sql = $sql . $and_array_key . " = " . "?";
+
+                array_push($where_val_array, $and_array_val);
+
+                //Here's where the ANDs get implemented if the counter is higher than 0.
+                if($and_counter > 0){
+
+                    $sql = $sql . " AND ";
+
+                    $and_counter = $and_counter -1;
+
+                }
+
+            }
+
+        }
+        else{
+            
+            foreach($where as $and_array_key => $and_array_val){
+
+                $sql = $sql . $and_array_key . " = " . "?";
+
+            }
+            
+        }
+
+        foreach($where_val_array as $where_key => $where_val){
+
+            switch(gettype($where_val)){
+
+                case "integer":
+                    $types = $types . "i";
+                    break;
+
+                case "double":
+                    $types = $types . "d";
+                    break;
+
+                case "string":
+                    $types = $types . "s";
+                    break;
+
+            }
+
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        
+        $stmt->bind_param($types, ...$where_val_array);
+
+        $stmt->execute();
+
+        $stmt->close();
+        
+    }
+
+
+    /**
+     * A method for updating based on input.
+     * 
+     * @param   string $table_name
+     * @param   array $data
+     * @param   array $where
+     * 
+     */
+    function get_update($table_name, $data, $where){
+
+        $columns = array();
+
         foreach($data as $col => $val){
 
             $values = $col . " = " . "'" . $val . "'";
