@@ -28,9 +28,9 @@ class SysDB{
     /**
      * A get row method that can return three different types of result, depending on $data
      * 
-     * @param   $table_name
-     * @param   $where
-     * @param   $data
+     * @param   string $table_name
+     * @param   string $where
+     * @param   array $data
      * 
      * if $data is "OBJECT" it will return the result in an object.
      * if $data is "ARRAY_A" it will return the result as an associative array.
@@ -88,10 +88,10 @@ class SysDB{
     /**
      * A method that will grab an entire colum from the specified table and column name.
      * 
-     * @param   $table_name
-     * @param   $col_name
+     * @param   string $table_name
+     * @param   string $col_name
      * 
-     * @return  $result
+     * @return  bool $result
      */
     function get_col($table_name, $col_name){
 
@@ -119,9 +119,9 @@ class SysDB{
     /**
      * A method that should be flexible enough that it will work with any valid SQL call.
      * 
-     * @param   $sql
+     * @param   string $sql
      * 
-     * @return  $result
+     * @return  array $result
      */
     function get_results($sql){
 
@@ -165,11 +165,11 @@ class SysDB{
     /**
      * A method for inserting data into a table.
      * 
-     * @param   $table_name
+     * @param   string $table_name
      * 
-     * @param   $data
+     * @param   array $data
      * 
-     * @return  $result
+     * @return  array $result
      * 
      * $data is expected to be a numbered array with associative arrays within.
      * 
@@ -215,11 +215,9 @@ class SysDB{
     /**
      * A method for inserting data into a table.
      * 
-     * @param   $table_name
+     * @param   string $table_name
      * 
-     * @param   $data
-     * 
-     * @return  $result
+     * @param   array $data
      * 
      * $data is expected to be a numbered array with associative arrays within.
      * 
@@ -284,6 +282,11 @@ class SysDB{
     }
 
     /**
+     * A method for updating based on input.
+     * 
+     * @param   string $table_name
+     * @param   array $data
+     * @param   array $where
      * 
      */
     function update($table_name, $data, $where){
@@ -304,6 +307,7 @@ class SysDB{
 
         $and_count = count($where);
 
+        //At this point I do a count to check how many ANDs should be implemented.
         if($and_count - 1 / 1 > 0){
 
             $and_counter = $and_count -1 / 1;
@@ -312,6 +316,7 @@ class SysDB{
 
                 $sql = $sql . $and_array_key . " = " . "'" . $and_array_val . "'";
 
+                //Here's where the ANDs get implemented if the counter is higher than 0.
                 if($and_counter > 0){
 
                     $sql = $sql . " AND ";
@@ -334,8 +339,6 @@ class SysDB{
         }
         
         $query = $this->conn->query($sql);
-
-        return $sql;
 
     }
 
