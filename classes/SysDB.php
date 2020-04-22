@@ -283,6 +283,62 @@ class SysDB{
 
     }
 
+    /**
+     * 
+     */
+    function update($table_name, $data, $where){
+
+        $columns = array();
+
+        foreach($data as $col => $val){
+
+            $values = $col . " = " . "'" . $val . "'";
+
+            array_push($columns, $values);
+
+        }
+
+        $updates = implode(", ", $columns);
+
+        $sql = "UPDATE $table_name SET $updates WHERE ";
+
+        $and_count = count($where);
+
+        if($and_count - 1 / 1 > 0){
+
+            $and_counter = $and_count -1 / 1;
+
+            foreach($where as $and_array_key => $and_array_val){
+
+                $sql = $sql . $and_array_key . " = " . "'" . $and_array_val . "'";
+
+                if($and_counter > 0){
+
+                    $sql = $sql . " AND ";
+
+                    $and_counter = $and_counter -1;
+
+                }
+
+            }
+
+        }
+        else{
+            
+            foreach($where as $and_array_key => $and_array_val){
+
+                $sql = $sql . $and_array_key . " = " . "'" . $and_array_val . "'";
+
+            }
+            
+        }
+        
+        $query = $this->conn->query($sql);
+
+        return $sql;
+
+    }
+
 }
 
 

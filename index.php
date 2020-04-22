@@ -42,7 +42,10 @@ include('header.php');
     //var_dump($insert);
 
     echo("<br><br><b>update method:</b> <br>");
-    
+    $array_two = array("year" => 1994, "make" => "Hoyota", "model" => "Corolla");
+    $where = array("id" => "7268", "make" => "Toyota");
+    $update = $db->update("cars", $array_two, $where);
+    var_dump($update);
     
 ?>
 
