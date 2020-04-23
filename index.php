@@ -42,10 +42,16 @@ include('header.php');
     //var_dump($insert);
 
     echo("<br><br><b>update method:</b> <br>");
-    $array_two = array("year" => 1994, "make" => "Hoyota", "model" => "Corolla");
+    //$array_two = array("year" => 1994, "make" => "Toyota", "model" => "Corolla");
+    //$where = array("id" => "7268", "make" => "Hoyota");
+    //$update = $db->update("cars", $array_two, $where);
+    //var_dump($update);
+
+    echo("<br><br><b>update method:</b> <br>");
+    $array_two = array("year" => 1994, "make" => "Toyota", "model" => "Corolla");
     $where = array("id" => "7268", "make" => "Toyota");
-    $update = $db->update("cars", $array_two, $where);
-    var_dump($update);
+    //$delete = $db->delete("cars", $where);
+    //var_dump($delete);
     
 ?>
 
