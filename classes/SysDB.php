@@ -26,6 +26,41 @@ class SysDB{
     }
 
     /**
+     * A get_type method to be used within other methods for prepared statements.
+     * 
+     * @param   array $array
+     * 
+     * @return  string $types
+     */
+    private function get_type($array){
+
+        $types = "";
+
+        foreach($array as $key => $val){
+
+            switch(gettype($val)){
+
+                case "integer":
+                    $types = $types . "i";
+                    break;
+
+                case "double":
+                    $types = $types . "d";
+                    break;
+
+                case "string":
+                    $types = $types . "s";
+                    break;
+
+            }
+
+        }
+
+        return $types;
+
+    }
+
+    /**
      * A get row method that can return three different types of result, depending on $data
      * 
      * @param   string $table_name
@@ -38,48 +73,71 @@ class SysDB{
      * 
      * @return  $result
      */
-    function get_row($table_name, $where, $data){
+    public function get_row($table_name, $where, $data){
 
         if(empty($data)){
             $data = "OBJECT";
         }
 
-        $sql = "SELECT * FROM $table_name WHERE id = '$where'";
+        //$sql = "SELECT * FROM $table_name WHERE id = '$where'";
 
-        if($query = $this->conn->query($sql)){
+        $types = "";
+        
+        switch(gettype($where)){
 
-            switch($data){
+            case "integer":
+                $types = $types . "i";
+                break;
 
-                case "OBJECT":
-                    $result = new \stdClass();
-    
-                    while($obj = $query->fetch_object()){
-    
-                    $result = $obj;
-    
-                    }
-                    break;
-                case "ARRAY_A":
-                    while($row = $query->fetch_assoc()){
-    
-                        $result = $row;
-    
-                    }
-                    break;
-                case "ARRAY_N":
-                    while($row = $query->fetch_array()){
-    
-                        $result = $row;
-    
-                    }
-                    break;
-    
-            }
+            case "double":
+                $types = $types . "d";
+                break;
+
+            case "string":
+                $types = $types . "s";
+                break;
 
         }
-        else{
-            $result = false;
+
+        $sql = "SELECT * FROM $table_name WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bind_param($types, $where);
+
+        $stmt->execute();
+
+        $query = $stmt->get_result();
+
+        switch($data){
+
+            case "OBJECT":
+                $result = new \stdClass();
+
+                while($obj = $query->fetch_object()){
+
+                $result = $obj;
+
+                }
+                break;
+            case "ARRAY_A":
+                while($row = $query->fetch_assoc()){
+
+                    $result = $row;
+
+                }
+                break;
+            case "ARRAY_N":
+                while($row = $query->fetch_array()){
+
+                    $result = $row;
+
+                }
+                break;
+
         }
+
+        $stmt->close();
 
         return $result;
 
@@ -93,24 +151,25 @@ class SysDB{
      * 
      * @return  bool $result
      */
-    function get_col($table_name, $col_name){
+    public function get_col($table_name, $col_name){
 
         $sql = "SELECT $col_name FROM $table_name";
 
-        if($query = $this->conn->query($sql)){
+        $stmt = $this->conn->prepare($sql);
 
-            $result = array();
+        $stmt->execute();
 
-            while($row = $query->fetch_array()){
+        $column = $stmt->get_result();
 
-                array_push($result, $row[$col_name]);
+        $result = array();
 
-            }
+        while($row = $column->fetch_object()){
+
+            array_push($result, $row);
 
         }
-        else{
-            $result = false;
-        }
+
+        $stmt->close();
 
         return $result;
 
@@ -123,7 +182,7 @@ class SysDB{
      * 
      * @return  array $result
      */
-    function get_results($sql){
+    public function get_results($sql){
 
         $query = $this->conn->query($sql);
 
@@ -136,15 +195,13 @@ class SysDB{
             }
             else{
 
-                $result = array();
+                $stmt = $this->conn->prepare($sql);
 
-                while($obj = $query->fetch_object()){
+                $stmt->execute();
 
-                    $sql_obj = $obj;
+                $result = $stmt->get_result()->fetch_object();
 
-                    array_push($result, $sql_obj);
-
-                }
+                $stmt->close();
 
                 return $result;
 
@@ -173,15 +230,13 @@ class SysDB{
      * 
      * $a_key_array and $a_value_array contain all the keys and values in the associative arrays respectively as they get array_pushed in the foreach loops.
      */
-    function insert($table_name, $data){
+    public function insert($table_name, $data){
 
         foreach($data as $key => $value){
 
             $a_key_array = array();
 
             $a_value_array = array();
-
-            $types = "";
 
             foreach($value as $a_key => $a_value){
 
@@ -191,26 +246,8 @@ class SysDB{
 
             }
 
-            foreach($a_value_array as $type_key => $type_val){
-
-                switch(gettype($type_val)){
-
-                    case "integer":
-                        $types = $types . "i";
-                        break;
-
-                    case "string":
-                        $types = $types . "s";
-                        break;
-
-                    case "double":
-                        $types = $types . "d";
-                        break;
-
-                }
-
-            }
-
+            $types = $this->get_type($a_value_array);
+            
             $a_key_array_string = implode(", ", $a_key_array);
 
             //Counts how many indexes the array has and makes a string with that amount of '?'
@@ -239,13 +276,11 @@ class SysDB{
      * @param   array $where
      * 
      */
-    function update($table_name, $data, $where){
+    public function update($table_name, $data, $where){
 
         $columns = array();
 
         $where_val_array = array();
-
-        $types = "";
 
         foreach($data as $col => $val){
 
@@ -294,25 +329,7 @@ class SysDB{
             
         }
 
-        foreach($where_val_array as $where_key => $where_val){
-
-            switch(gettype($where_val)){
-
-                case "integer":
-                    $types = $types . "i";
-                    break;
-
-                case "double":
-                    $types = $types . "d";
-                    break;
-
-                case "string":
-                    $types = $types . "s";
-                    break;
-
-            }
-
-        }
+        $types = $this->get_type($where_val_array);
 
         $stmt = $this->conn->prepare($sql);
         
@@ -333,7 +350,7 @@ class SysDB{
      * 
      * 
      */
-    function delete($table_name, $where){
+    public function delete($table_name, $where){
 
         $where_val_array = array();
 
@@ -376,25 +393,7 @@ class SysDB{
             
         }
 
-        foreach($where_val_array as $where_key => $where_val){
-
-            switch(gettype($where_val)){
-
-                case "integer":
-                    $types = $types . "i";
-                    break;
-
-                case "double":
-                    $types = $types . "d";
-                    break;
-
-                case "string":
-                    $types = $types . "s";
-                    break;
-
-            }
-
-        }
+        $types = $this->get_type($where_val_array);
         
         $stmt = $this->conn->prepare($sql);
 

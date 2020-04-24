@@ -21,11 +21,11 @@ include('header.php');
     $db = new SysTem\SysDB();
 
     echo("<b>get_row method:</b> <br>");
-    //$get_row = $db->get_row("cars", "1", "ARRAY_N");
+    //$get_row = $db->get_row("cars", "1", "OBJECT");
     //var_dump($get_row);
 
     echo("<br><br><b>get_col method:</b> <br>");
-    //$get_col = $db->get_col("cars", "bleh");
+    //$get_col = $db->get_col("cars", "id");
     //var_dump($get_col);
     
     echo("<br><br><b>get_results method:</b> <br>");
@@ -42,12 +42,12 @@ include('header.php');
     //var_dump($insert);
 
     echo("<br><br><b>update method:</b> <br>");
-    //$array_two = array("year" => 1994, "make" => "Toyota", "model" => "Corolla");
-    //$where = array("id" => "7268", "make" => "Hoyota");
+    $array_two = array("year" => 1994, "make" => "Toyota", "model" => "Corolla");
+    $where = array("id" => "7304", "make" => "Hoyota");
     //$update = $db->update("cars", $array_two, $where);
     //var_dump($update);
 
-    echo("<br><br><b>update method:</b> <br>");
+    echo("<br><br><b>delete method:</b> <br>");
     $array_two = array("year" => 1994, "make" => "Toyota", "model" => "Corolla");
     $where = array("id" => "7268", "make" => "Toyota");
     //$delete = $db->delete("cars", $where);
